@@ -7,7 +7,7 @@ client = boto3.client('athena')
 def execute_query(query):
     response = client.start_query_execution(
         QueryString=query,
-        ResultConfiguration={'OutputLocation': os.}
+        ResultConfiguration={'OutputLocation': os.environ.get("AWS_S3_BUCKET_LOCATION")}
     )
     return response['QueryExecutionId']
 

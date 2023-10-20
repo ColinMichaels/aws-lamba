@@ -13,13 +13,13 @@ def lambda_handler(event, context):
     try:
 
         log_event(event)
-       # params = extract_parameters(event)
-       # query = build_query_from_params(params)
-       # query_execution_id = execute_query(query)
-       # wait_for_query_completion(query_execution_id)
-       # results = fetch_query_results(query_execution_id)
-       # formatted_results = format_response(results, 'JSON')
-       # return formatted_results
+        params = extract_parameters(event)
+        query = build_query_from_params(params)
+        query_execution_id = execute_query(query)
+        wait_for_query_completion(query_execution_id)
+        results = fetch_query_results(query_execution_id)
+        formatted_results = format_response(results, 'JSON')
+        return formatted_results
     
     except AthenaQueryError as e:
         results = formatted_results(500, json.dumps({'error': str(e)} ))
