@@ -1,4 +1,6 @@
+import datetime
 from utils.error_handling import InputValidationError
+from security.sanitizer import clean_parameter
 
 def validate_input(data):
     if 'start_date' not in data or not validate_date_format(data['start_date']):
@@ -12,11 +14,16 @@ def extract_parameters(event):
     try:
         body = json.loads(event.get('body', '{}'))
         validate_input(body)
-        start_date = body['start_date']
-        end_date = body['end_date']
-        site = body['site']
-        combiner = body['combiner']
-        inverter = body['inverter']
+        raw_start_date = body['start_date']
+        start_date = clean_parameter(raw_start_date)
+        raw_end_date = body['end_date']
+        end_date = clean_parameter(raw_end_date)
+        raw_site = body['site']
+        site = clean_parameter(raw_site)
+        raw_combiner = body['combiner']
+        combiner = clean_parameter(raw_combiner)
+        raw_inverter = body['inverter']
+        inverter = clean_parameter(raw_inverter)
         return start_date, end_date, site, combiner, inverter
     except KeyError as e:
         raise ValueError(f"Parameter {e} is missing.")
